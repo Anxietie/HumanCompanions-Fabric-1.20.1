@@ -789,8 +789,4 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
     public @Nullable AbstractContainerMenu createMenu(int syncID, Inventory playerInventory, Player player) {
         return new CompanionContainer(syncID, playerInventory, this.inventory, this.getId());
     }
-
-    public static AttributeSupplier.@NotNull Builder createMobAttributes() {
-        return Mob.createMobAttributes().add(Attributes.ATTACK_DAMAGE);
-    }
 }

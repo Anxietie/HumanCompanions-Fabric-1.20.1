@@ -16,25 +16,25 @@ public final class EntityInit {
                             Arbalist::new,
                             MobCategory.AMBIENT)
                     .sized(0.6f, 1.8f),
-            AbstractHumanCompanionEntity.createMobAttributes()
+            AbstractHumanCompanionEntity.createAttributes()
     );
     public static final EntityType<Archer> ARCHER = registerLivingEntity("archer", EntityType.Builder.of(
                             Archer::new,
                             MobCategory.AMBIENT)
                     .sized(0.6f, 1.8f),
-            AbstractHumanCompanionEntity.createMobAttributes()
+            AbstractHumanCompanionEntity.createAttributes()
     );
     public static final EntityType<Axeguard> AXEGUARD = registerLivingEntity("axeguard", EntityType.Builder.of(
                             Axeguard::new,
                             MobCategory.AMBIENT)
                     .sized(0.6f, 1.8f),
-            AbstractHumanCompanionEntity.createMobAttributes()
+            AbstractHumanCompanionEntity.createAttributes()
     );
     public static final EntityType<Knight> KNIGHT = registerLivingEntity("knight", EntityType.Builder.of(
                             Knight::new,
                             MobCategory.AMBIENT)
                     .sized(0.6f, 1.8f),
-            AbstractHumanCompanionEntity.createMobAttributes()
+            AbstractHumanCompanionEntity.createAttributes()
     );
 
     public static void registerEntities() {
