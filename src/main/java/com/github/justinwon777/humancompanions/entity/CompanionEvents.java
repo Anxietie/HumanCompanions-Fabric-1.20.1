@@ -1,46 +1,55 @@
 package com.github.justinwon777.humancompanions.entity;
 
 import com.github.justinwon777.humancompanions.HumanCompanions;
-import com.github.justinwon777.humancompanions.core.Config;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
+import net.fabricmc.fabric.api.entity.event.v1.ServerEntityCombatEvents;
+import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = HumanCompanions.MOD_ID)
 public class CompanionEvents {
-    @SubscribeEvent
-    public static void giveExperience(final LivingDeathEvent event) {
-        if (event.getSource().getEntity() instanceof AbstractHumanCompanionEntity companion) {
-            companion.giveExperiencePoints(event.getEntity().getExperienceReward());
-        }
+    public static void registerEvents() {
+        companionKillsMob();
+        companionFriendlyFire();
     }
 
-    @SubscribeEvent
-    public static void friendlyFire(final LivingAttackEvent event) {
-        if (event.getSource().getEntity() instanceof AbstractHumanCompanionEntity companion && companion.isTame()) {
-            if (!Config.FRIENDLY_FIRE_PLAYER.get()) {
-                if (event.getEntity() instanceof Player player) {
-                    if (companion.getOwner() == player) {
-                        event.setCanceled(true);
-                        return;
-                    }
-                }
+    private static void companionKillsMob() {
+        ServerEntityCombatEvents.AFTER_KILLED_OTHER_ENTITY.register((world, entity, killedEntity) -> {
+            if (entity instanceof AbstractHumanCompanionEntity companion) {
+                companion.giveExperiencePoints(killedEntity.getExperienceReward());
             }
-            if (!Config.FRIENDLY_FIRE_COMPANIONS.get()) {
-                if (event.getEntity() instanceof TamableAnimal entity) {
-                    if (entity.isTame()) {
-                        LivingEntity owner1 = entity.getOwner();
-                        LivingEntity owner2 = companion.getOwner();
-                        if (owner1 == owner2) {
-                            event.setCanceled(true);
-                        }
-                    }
-                }
-            }
-        }
+        });
     }
+
+    private static void companionFriendlyFire() {
+        ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) -> {
+            if (source.getEntity() != null && source.getEntity() instanceof AbstractHumanCompanionEntity) {
+                if (entity instanceof AbstractHumanCompanionEntity attackedCompanion && attackedCompanion.isTame()) {
+                    return HumanCompanions.getConfig().FRIENDLY_FIRE_COMPANIONS;
+                }
+                else if (entity instanceof Player) {
+                    return HumanCompanions.getConfig().FRIENDLY_FIRE_PLAYER;
+                }
+            }
+
+            return true;
+        });
+    }
+
+    /*
+    // player can always damage companion
+    public static void playerAttacksCompanion() {
+        // check if player hit companion
+        AttackEntityCallback.EVENT.register((player, level, interactionHand, entity, entityHitResult) -> {
+            // pass if player is in spectator mode, the attacked entity is not a companion, the companion is not tame, or the companion's owner isn't the attacking player
+            if (player.isSpectator() ||
+                    !(entity instanceof AbstractHumanCompanionEntity companion) ||
+                    !(companion.isTame() && companion.isOwnedBy(player)) ||
+                    !HumanCompanions.getConfig().FRIENDLY_FIRE_PLAYER)
+            {
+                return InteractionResult.PASS;
+            }
+
+            return InteractionResult.SUCCESS;
+        });
+    }
+    */
 }

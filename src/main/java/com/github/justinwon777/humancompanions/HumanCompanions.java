@@ -1,9 +1,9 @@
 package com.github.justinwon777.humancompanions;
 
 import com.github.justinwon777.humancompanions.core.*;
+import com.github.justinwon777.humancompanions.entity.CompanionEvents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.world.item.CreativeModeTabs;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +19,7 @@ public class HumanCompanions implements ModInitializer {
 
         EntityInit.registerEntities();
         ItemInit.registerItems();
+        CompanionEvents.registerEvents();
     }
 
     public static Config getConfig() {
