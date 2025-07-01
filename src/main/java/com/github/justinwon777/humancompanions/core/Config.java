@@ -60,6 +60,7 @@ public class Config {
 
         try {
             writer = new JsonWriter(new FileWriter(configFile, StandardCharsets.UTF_8));
+            writer.setLenient(true);
             writer.setIndent("  ");
             writer.beginObject();
             // writer.name("average_house_separation").value(AVERAGE_HOUSE_SEPARATION);
@@ -93,6 +94,7 @@ public class Config {
 
         try {
             reader = new JsonReader(new FileReader(configFile, StandardCharsets.UTF_8));
+            reader.setLenient(true);
             JsonObject object = gson.fromJson(reader, JsonObject.class);
             // AVERAGE_HOUSE_SEPARATION = object.get("average_house_separation").getAsInt();
             FRIENDLY_FIRE_COMPANIONS = object.get("friendly_fire_companions").getAsBoolean();
