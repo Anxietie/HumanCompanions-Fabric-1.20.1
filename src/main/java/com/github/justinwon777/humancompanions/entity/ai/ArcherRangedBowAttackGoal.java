@@ -1,11 +1,13 @@
 package com.github.justinwon777.humancompanions.entity.ai;
 
 import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEntity;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.BowItem;
+import net.minecraft.world.item.Items;
 
 import java.util.EnumSet;
 
@@ -131,7 +133,7 @@ public class ArcherRangedBowAttackGoal<T extends AbstractHumanCompanionEntity & 
                     }
                 }
             } else if (--this.attackTime <= 0 && this.seeTime >= -60) {
-                this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof BowItem));
+                this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, Items.BOW));
             }
 
         }

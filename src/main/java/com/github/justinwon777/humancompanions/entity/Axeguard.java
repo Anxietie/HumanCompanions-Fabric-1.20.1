@@ -1,9 +1,10 @@
 package com.github.justinwon777.humancompanions.entity;
 
-import com.github.justinwon777.humancompanions.core.Config;
-import com.github.justinwon777.humancompanions.core.TagsInit;
+import com.github.justinwon777.humancompanions.HumanCompanions;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -12,8 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class Axeguard extends AbstractHumanCompanionEntity {
 
@@ -23,7 +23,7 @@ public class Axeguard extends AbstractHumanCompanionEntity {
     }
 
     public boolean isAxe(ItemStack stack) {
-    	return stack.is(TagsInit.Items.AXES) || (!stack.is(TagsInit.Items.SWORDS) && stack.getItem() instanceof AxeItem);
+    	return stack.is(ItemTags.AXES) || (!stack.is(ItemTags.SWORDS) && stack.getItem() instanceof AxeItem);
     }
     
     public void checkAxe() {
@@ -58,7 +58,7 @@ public class Axeguard extends AbstractHumanCompanionEntity {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn,
                                         @Nullable CompoundTag dataTag) {
-        if (Config.SPAWN_WEAPON.get()) {
+        if (HumanCompanions.getConfig().SPAWN_WEAPON) {
             ItemStack itemstack = getSpawnAxe();
             if (!itemstack.isEmpty()) {
                 this.inventory.setItem(4, itemstack);

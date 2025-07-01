@@ -1,13 +1,17 @@
 package com.github.justinwon777.humancompanions.entity;
 
+import com.github.justinwon777.humancompanions.HumanCompanions;
 import com.github.justinwon777.humancompanions.container.CompanionContainer;
 import com.github.justinwon777.humancompanions.core.Config;
 import com.github.justinwon777.humancompanions.core.EntityInit;
-import com.github.justinwon777.humancompanions.core.PacketHandler;
+import com.github.justinwon777.humancompanions.mixin.ServerPlayerMixin;
+import com.github.justinwon777.humancompanions.networking.PacketHandler;
 import com.github.justinwon777.humancompanions.entity.ai.*;
-import com.github.justinwon777.humancompanions.networking.OpenInventoryPacket;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -34,12 +38,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerContainerEvent;
-import net.minecraftforge.network.PacketDistributor;
 import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.*;
 
 public class AbstractHumanCompanionEntity extends TamableAnimal {
@@ -148,7 +149,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
         this.entityData.define(PATROL_POS, Optional.empty());
         this.entityData.define(PATROL_RADIUS, 10);
         this.entityData.define(SEX, 0);
-        this.entityData.define(BASE_HEALTH, Config.BASE_HEALTH.get());
+        this.entityData.define(BASE_HEALTH, HumanCompanions.getConfig().BASE_HEALTH);
         this.entityData.define(EXP_LVL, 0);
         this.entityData.define(FOOD1, "");
         this.entityData.define(FOOD2, "");
@@ -159,7 +160,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn,
                                         @Nullable CompoundTag dataTag) {
-        int baseHealth = Config.BASE_HEALTH.get() + CompanionData.getHealthModifier();
+        int baseHealth = HumanCompanions.getConfig().BASE_HEALTH + CompanionData.getHealthModifier();
         modifyMaxHealth(baseHealth - 20, "companion base health", true);
         this.setHealth(this.getMaxHealth());
         setBaseHealth(baseHealth);
@@ -175,7 +176,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
         this.goalSelector.addGoal(3, patrolGoal);
         setFoodRequirements();
 
-        if (Config.SPAWN_ARMOR.get()) {
+        if (HumanCompanions.getConfig().SPAWN_ARMOR) {
             for (int i = 0; i < 4; i++) {
                 EquipmentSlot armorType = armorTypes[i];
                 ItemStack itemstack = CompanionData.getSpawnArmor(armorType);
@@ -236,7 +237,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
         foodRequirements.put(food1, tag.getInt("food1_amt"));
         foodRequirements.put(food2, tag.getInt("food2_amt"));
         if (tag.getInt("baseHealth") == 0) {
-            this.setBaseHealth(Config.BASE_HEALTH.get());
+            this.setBaseHealth(HumanCompanions.getConfig().BASE_HEALTH);
         } else {
             this.setBaseHealth(tag.getInt("baseHealth"));
         }
@@ -269,7 +270,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
 
     @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob parent) {
-        return EntityInit.Knight.get().create(level);
+        return EntityInit.KNIGHT.create(level);
     }
 
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -350,12 +351,14 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
         if (player.containerMenu != player.inventoryMenu) {
             player.closeContainer();
         }
-        player.nextContainerCounter();
-        PacketHandler.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new OpenInventoryPacket(
-                player.containerCounter, this.inventory.getContainerSize(), this.getId()));
-        player.containerMenu = new CompanionContainer(player.containerCounter, player.getInventory(), this.inventory);
-        player.initMenu(player.containerMenu);
-        MinecraftForge.EVENT_BUS.post(new PlayerContainerEvent.Open(player, player.containerMenu));
+        ((ServerPlayerMixin) player).humancompanions$nextContainerCounterInvoker();
+        FriendlyByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(((ServerPlayerMixin) player).humancompanions$containerCounterAccessor());
+        buf.writeInt(this.inventory.getContainerSize());
+        buf.writeInt(this.getId());
+        ServerPlayNetworking.send(player, PacketHandler.OPEN_INVENTORY_ID, PacketByteBufs.empty());
+        player.containerMenu = new CompanionContainer(((ServerPlayerMixin) player).humancompanions$containerCounterAccessor(), player.getInventory(), this.inventory);
+        ((ServerPlayerMixin) player).humancompanions$initMenuInvoker(player.containerMenu);
     }
 
     public void checkArmor() {
@@ -417,11 +420,11 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
     }
 
     public boolean hurt(DamageSource p_34288_, float p_34289_) {
-        if (p_34288_.getEntity() == this.getOwner() && !Config.FRIENDLY_FIRE_PLAYER.get()) {
+        if (p_34288_.getEntity() == this.getOwner() && !HumanCompanions.getConfig().FRIENDLY_FIRE_PLAYER) {
             return false;
         }
 
-        if (p_34288_.is(DamageTypeTags.IS_FALL) && !Config.FALL_DAMAGE.get()) {
+        if (p_34288_.is(DamageTypeTags.IS_FALL) && !HumanCompanions.getConfig().FALL_DAMAGE) {
             return false;
         }
 

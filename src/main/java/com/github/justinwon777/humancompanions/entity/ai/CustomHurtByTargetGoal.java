@@ -3,7 +3,6 @@ package com.github.justinwon777.humancompanions.entity.ai;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
-import javax.annotation.Nullable;
 
 import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEntity;
 import net.minecraft.world.entity.EntitySelector;
@@ -17,6 +16,7 @@ import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.Nullable;
 
 public class CustomHurtByTargetGoal extends TargetGoal {
     private static final TargetingConditions HURT_BY_TARGETING = TargetingConditions.forCombat().ignoreLineOfSight().ignoreInvisibilityTesting();

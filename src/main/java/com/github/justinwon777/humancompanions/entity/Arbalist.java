@@ -1,6 +1,6 @@
 package com.github.justinwon777.humancompanions.entity;
 
-import com.github.justinwon777.humancompanions.core.Config;
+import com.github.justinwon777.humancompanions.HumanCompanions;
 import com.github.justinwon777.humancompanions.entity.ai.ArbalistRangedCrossbowAttackGoal;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -13,8 +13,8 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 import java.util.function.Predicate;
 
 public class Arbalist extends AbstractHumanCompanionEntity implements CrossbowAttackMob {
@@ -82,7 +82,7 @@ public class Arbalist extends AbstractHumanCompanionEntity implements CrossbowAt
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn,
                                         @Nullable CompoundTag dataTag) {
-        if (Config.SPAWN_WEAPON.get()) {
+        if (HumanCompanions.getConfig().SPAWN_WEAPON) {
             this.inventory.setItem(4, Items.CROSSBOW.getDefaultInstance());
             checkCrossbow();
         }

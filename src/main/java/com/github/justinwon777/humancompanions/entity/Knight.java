@@ -1,9 +1,9 @@
 package com.github.justinwon777.humancompanions.entity;
 
-import com.github.justinwon777.humancompanions.core.Config;
-import com.github.justinwon777.humancompanions.core.TagsInit;
+import com.github.justinwon777.humancompanions.HumanCompanions;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -12,8 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class Knight extends AbstractHumanCompanionEntity {
 
@@ -23,7 +22,7 @@ public class Knight extends AbstractHumanCompanionEntity {
     }
 
     public boolean isSword(ItemStack stack) {
-    	return stack.is(TagsInit.Items.SWORDS) || (!stack.is(TagsInit.Items.AXES) && stack.getItem() instanceof SwordItem);
+    	return stack.is(ItemTags.SWORDS) || (!stack.is(ItemTags.AXES) && stack.getItem() instanceof SwordItem);
     }
 
     public void checkSword() {
@@ -58,7 +57,7 @@ public class Knight extends AbstractHumanCompanionEntity {
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn,
                                         @Nullable CompoundTag dataTag) {
-        if (Config.SPAWN_WEAPON.get()) {
+        if (HumanCompanions.getConfig().SPAWN_WEAPON) {
             ItemStack itemstack = getSpawnSword();
             if (!itemstack.isEmpty()) {
                 this.inventory.setItem(4, itemstack);

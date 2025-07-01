@@ -4,8 +4,7 @@ import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEnti
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class PatrolGoal extends RandomStrollGoal {
 

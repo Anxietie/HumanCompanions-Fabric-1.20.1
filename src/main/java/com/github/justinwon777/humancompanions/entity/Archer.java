@@ -1,5 +1,6 @@
 package com.github.justinwon777.humancompanions.entity;
 
+import com.github.justinwon777.humancompanions.HumanCompanions;
 import com.github.justinwon777.humancompanions.core.Config;
 import com.github.justinwon777.humancompanions.entity.ai.ArcherRangedBowAttackGoal;
 import net.minecraft.nbt.CompoundTag;
@@ -14,10 +15,13 @@ import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
+import java.util.function.Predicate;
 
 public class Archer extends AbstractHumanCompanionEntity implements RangedAttackMob {
 
@@ -47,14 +51,36 @@ public class Archer extends AbstractHumanCompanionEntity implements RangedAttack
     }
 
     @Override
-    public void performRangedAttack(LivingEntity p_32141_, float p_32142_) {
-        ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, item -> item instanceof net.minecraft.world.item.BowItem)));
-        AbstractArrow abstractarrow = this.getArrow(itemstack, p_32142_);
-        if (this.getMainHandItem().getItem() instanceof net.minecraft.world.item.BowItem)
-            abstractarrow = ((net.minecraft.world.item.BowItem)this.getMainHandItem().getItem()).customArrow(abstractarrow);
-        double d0 = p_32141_.getX() - this.getX();
-        double d1 = p_32141_.getY(0.3333333333333333D) - abstractarrow.getY();
-        double d2 = p_32141_.getZ() - this.getZ();
+    public @NotNull ItemStack getProjectile(ItemStack weaponStack) {
+        if (!(weaponStack.getItem() instanceof ProjectileWeaponItem)) {
+            return ItemStack.EMPTY;
+        } else {
+            Predicate<ItemStack> predicate = ((ProjectileWeaponItem)weaponStack.getItem()).getSupportedHeldProjectiles();
+            ItemStack itemStack = ProjectileWeaponItem.getHeldProjectile(this, predicate);
+            if (!itemStack.isEmpty()) {
+                return itemStack;
+            } else {
+                predicate = ((ProjectileWeaponItem)weaponStack.getItem()).getAllSupportedProjectiles();
+
+                for (int i = 0; i < this.inventory.getContainerSize(); i++) {
+                    ItemStack itemStack2 = this.inventory.getItem(i);
+                    if (predicate.test(itemStack2)) {
+                        return itemStack2;
+                    }
+                }
+
+               return ItemStack.EMPTY;
+            }
+        }
+    }
+
+    @Override
+    public void performRangedAttack(LivingEntity target, float velocity) {
+        ItemStack itemstack = this.getProjectile(this.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this, Items.BOW)));
+        AbstractArrow abstractarrow = this.getArrow(itemstack, velocity);
+        double d0 = target.getX() - this.getX();
+        double d1 = target.getY(0.3333333333333333D) - abstractarrow.getY();
+        double d2 = target.getZ() - this.getZ();
         double d3 = Math.sqrt(d0 * d0 + d2 * d2);
         abstractarrow.shoot(d0, d1 + d3 * (double)0.20F, d2, 1.6F, (float)(this.level().getDifficulty().getId() * 3));
         this.playSound(SoundEvents.ARROW_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -73,8 +99,8 @@ public class Archer extends AbstractHumanCompanionEntity implements RangedAttack
         }
     }
 
-    protected AbstractArrow getArrow(ItemStack p_32156_, float p_32157_) {
-        return ProjectileUtil.getMobArrow(this, p_32156_, p_32157_);
+    protected AbstractArrow getArrow(ItemStack arrowStack, float velocity) {
+        return ProjectileUtil.getMobArrow(this, arrowStack, velocity);
     }
 
     public void readAdditionalSaveData(CompoundTag tag) {
@@ -86,7 +112,7 @@ public class Archer extends AbstractHumanCompanionEntity implements RangedAttack
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn,
                                         MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn,
                                         @Nullable CompoundTag dataTag) {
-        if (Config.SPAWN_WEAPON.get()) {
+        if (HumanCompanions.getConfig().SPAWN_WEAPON) {
             this.inventory.setItem(4, Items.BOW.getDefaultInstance());
             checkBow();
         }

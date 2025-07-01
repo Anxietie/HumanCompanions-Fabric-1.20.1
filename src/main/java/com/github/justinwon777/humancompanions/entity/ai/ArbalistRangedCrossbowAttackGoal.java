@@ -10,6 +10,7 @@ import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
 import java.util.EnumSet;
 
@@ -106,7 +107,7 @@ public class ArbalistRangedCrossbowAttackGoal<T extends AbstractHumanCompanionEn
             this.mob.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
             if (this.crossbowState == ArbalistRangedCrossbowAttackGoal.CrossbowState.UNCHARGED) {
                 if (!flag2) {
-                    this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
+                    this.mob.startUsingItem(ProjectileUtil.getWeaponHoldingHand(this.mob, Items.CROSSBOW));
                     this.crossbowState = ArbalistRangedCrossbowAttackGoal.CrossbowState.CHARGING;
                     this.mob.setChargingCrossbow(true);
                 }
@@ -131,7 +132,7 @@ public class ArbalistRangedCrossbowAttackGoal<T extends AbstractHumanCompanionEn
             } else if (this.crossbowState == ArbalistRangedCrossbowAttackGoal.CrossbowState.READY_TO_ATTACK && flag) {
                 if (this.mob.getTarget() != null) {
                     this.mob.performRangedAttack(livingentity, 1.0F);
-                    ItemStack itemstack1 = this.mob.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this.mob, item -> item instanceof CrossbowItem));
+                    ItemStack itemstack1 = this.mob.getItemInHand(ProjectileUtil.getWeaponHoldingHand(this.mob, Items.CROSSBOW));
                     CrossbowItem.setCharged(itemstack1, false);
                     this.crossbowState = ArbalistRangedCrossbowAttackGoal.CrossbowState.UNCHARGED;
                 }

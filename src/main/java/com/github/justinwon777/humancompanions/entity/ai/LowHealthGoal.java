@@ -1,5 +1,6 @@
 package com.github.justinwon777.humancompanions.entity.ai;
 
+import com.github.justinwon777.humancompanions.HumanCompanions;
 import com.github.justinwon777.humancompanions.core.Config;
 import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEntity;
 import net.minecraft.network.chat.Component;
@@ -17,7 +18,7 @@ public class LowHealthGoal extends Goal {
     }
 
     public boolean canUse() {
-        if (Config.LOW_HEALTH_FOOD.get()) {
+        if (HumanCompanions.getConfig().LOW_HEALTH_FOOD) {
             if (this.mob.getHealth() < this.mob.getMaxHealth() / 2 && this.mob.isTame()) {
                 food = mob.checkFood();
                 return food.isEmpty();
