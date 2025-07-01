@@ -16,7 +16,7 @@ import static com.github.justinwon777.humancompanions.HumanCompanions.LOGGER;
 
 // rudimentary config
 public class Config {
-    public int AVERAGE_HOUSE_SEPARATION = 20; // int (11,20)
+    // public int AVERAGE_HOUSE_SEPARATION = 20; // int (11,20)
     public boolean FRIENDLY_FIRE_COMPANIONS = true; // boolean
     public boolean FRIENDLY_FIRE_PLAYER = true; // boolean
     public boolean FALL_DAMAGE = true; // boolean
@@ -48,6 +48,7 @@ public class Config {
             return;
         }
 
+        LOGGER.info("No config found; creating default config");
         createDefaultConfig(configFile);
     }
 
@@ -62,7 +63,7 @@ public class Config {
             writer = new JsonWriter(new FileWriter(configFile, StandardCharsets.UTF_8));
             writer.setIndent("  ");
             writer.beginObject();
-            writer.name("average_house_separation").value(AVERAGE_HOUSE_SEPARATION);
+            // writer.name("average_house_separation").value(AVERAGE_HOUSE_SEPARATION);
             writer.name("friendly_fire_companions").value(FRIENDLY_FIRE_COMPANIONS);
             writer.name("friendly_fire_player").value(FRIENDLY_FIRE_PLAYER);
             writer.name("fall_damage").value(FALL_DAMAGE);
@@ -94,7 +95,7 @@ public class Config {
         try {
             reader = new JsonReader(new FileReader(configFile, StandardCharsets.UTF_8));
             JsonObject object = gson.fromJson(reader, JsonObject.class);
-            AVERAGE_HOUSE_SEPARATION = object.get("average_house_separation").getAsInt();
+            // AVERAGE_HOUSE_SEPARATION = object.get("average_house_separation").getAsInt();
             FRIENDLY_FIRE_COMPANIONS = object.get("friendly_fire_companions").getAsBoolean();
             FRIENDLY_FIRE_PLAYER = object.get("friendly_fire_player").getAsBoolean();
             FALL_DAMAGE = object.get("fall_damage").getAsBoolean();
