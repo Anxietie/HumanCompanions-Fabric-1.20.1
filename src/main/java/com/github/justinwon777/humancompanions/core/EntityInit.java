@@ -1,10 +1,7 @@
 package com.github.justinwon777.humancompanions.core;
 
 import com.github.justinwon777.humancompanions.HumanCompanions;
-import com.github.justinwon777.humancompanions.entity.Arbalist;
-import com.github.justinwon777.humancompanions.entity.Archer;
-import com.github.justinwon777.humancompanions.entity.Axeguard;
-import com.github.justinwon777.humancompanions.entity.Knight;
+import com.github.justinwon777.humancompanions.entity.*;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -19,25 +16,25 @@ public final class EntityInit {
             Arbalist::new,
             MobCategory.AMBIENT)
             .sized(0.6f, 1.8f),
-            Arbalist.createMobAttributes()
+            AbstractHumanCompanionEntity.createMobAttributes()
     );
     public static final EntityType<Archer> ARCHER = registerLivingEntity("archer", EntityType.Builder.of(
             Archer::new,
             MobCategory.AMBIENT)
             .sized(0.6f, 1.8f),
-            Archer.createMobAttributes()
+            AbstractHumanCompanionEntity.createMobAttributes()
     );
     public static final EntityType<Axeguard> AXEGUARD = registerLivingEntity("axeguard", EntityType.Builder.of(
             Axeguard::new,
             MobCategory.AMBIENT)
             .sized(0.6f, 1.8f),
-            Axeguard.createMobAttributes()
+            AbstractHumanCompanionEntity.createMobAttributes()
     );
     public static final EntityType<Knight> KNIGHT = registerLivingEntity("knight", EntityType.Builder.of(
                     Knight::new,
                     MobCategory.AMBIENT)
             .sized(0.6f, 1.8f),
-            Knight.createMobAttributes()
+            AbstractHumanCompanionEntity.createMobAttributes()
     );
 
     public static void registerEntities() {}
