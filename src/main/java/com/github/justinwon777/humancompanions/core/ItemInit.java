@@ -1,30 +1,48 @@
 package com.github.justinwon777.humancompanions.core;
 
 import com.github.justinwon777.humancompanions.HumanCompanions;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.SpawnEggItem;
 
-public class ItemInit {
+public final class ItemInit {
+    public static final Item ARBALIST_SPAWN_EGG = register("arbalist_spawn_egg", new SpawnEggItem(
+            EntityInit.ARBALIST,
+            0xE8AF5A,
+            0xFF0000,
+            new Item.Properties().stacksTo(64))
+    );
+    public static final Item ARCHER_SPAWN_EGG = register("archer_spawn_egg", new SpawnEggItem(
+            EntityInit.ARCHER,
+            0xE8AF5A,
+            0x0000FF,
+            new Item.Properties().stacksTo(64))
+    );
+    public static final Item AXEGUARD_SPAWN_EGG = register("axeguard_spawn_egg", new SpawnEggItem(
+            EntityInit.AXEGUARD,
+            0xE8AF5A,
+            0x00FF00,
+            new Item.Properties().stacksTo(64))
+    );
+    public static final Item KNIGHT_SPAWN_EGG = register("knight_spawn_egg", new SpawnEggItem(
+            EntityInit.KNIGHT,
+            0xE8AF5A,
+            0xFFFF00,
+            new Item.Properties().stacksTo(64))
+    );
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS,
-            HumanCompanions.MOD_ID);
+    public static void registerItems() {
+        ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.SPAWN_EGGS).register(content -> {
+            content.addAfter(Items.ZOMBIFIED_PIGLIN_SPAWN_EGG, ARBALIST_SPAWN_EGG, ARCHER_SPAWN_EGG, AXEGUARD_SPAWN_EGG, KNIGHT_SPAWN_EGG);
+        });
+    }
 
-    public static final RegistryObject<ForgeSpawnEggItem> Arbalist_Spawn_Egg = ITEMS.register("arbalist_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityInit.Arbalist,0xE8AF5A, 0xFF0000,
-                    new Item.Properties().stacksTo(64)));
-
-    public static final RegistryObject<ForgeSpawnEggItem> Archer_Spawn_Egg = ITEMS.register("archer_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityInit.Archer,0xE8AF5A, 0x0000FF,
-                    new Item.Properties().stacksTo(64)));
-
-    public static final RegistryObject<ForgeSpawnEggItem> Axeguard_Spawn_Egg = ITEMS.register("axeguard_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityInit.Axeguard,0xE8AF5A, 0x00FF00,
-                    new Item.Properties().stacksTo(64)));
-
-    public static final RegistryObject<ForgeSpawnEggItem> Knight_Spawn_Egg = ITEMS.register("knight_spawn_egg",
-            () -> new ForgeSpawnEggItem(EntityInit.Knight,0xE8AF5A, 0xFFFF00,
-                    new Item.Properties().stacksTo(64)));
+    private static <T extends Item> T register(String path, T item) {
+        return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(HumanCompanions.MOD_ID, path), item);
+    }
 }
