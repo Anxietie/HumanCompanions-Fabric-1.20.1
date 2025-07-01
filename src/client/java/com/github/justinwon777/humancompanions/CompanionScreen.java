@@ -12,6 +12,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.ImageButton;
@@ -64,10 +65,18 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
     int col1;
     int col2;
 
-    public CompanionScreen(CompanionContainer container, Inventory pPlayerInventory,
-                           AbstractHumanCompanionEntity companion) {
-        super(container, pPlayerInventory, companion.getName());
-        this.companion = companion;
+    /*
+    public CompanionScreen(CompanionContainer container, Inventory playerInventory, Component title) {
+        super(container, playerInventory, title);
+        companion = null;
+        containerRows = 0;
+    }
+
+     */
+
+    public CompanionScreen(CompanionContainer container, Inventory pPlayerInventory, Component title) {
+        super(container, pPlayerInventory, title);
+        this.companion = (AbstractHumanCompanionEntity) Minecraft.getInstance().level.getEntity(container.getCompanionID());
         this.containerRows = container.getRowCount();
         this.imageHeight = 114 + this.containerRows * 18;
         this.inventoryLabelY = this.imageHeight - 94;

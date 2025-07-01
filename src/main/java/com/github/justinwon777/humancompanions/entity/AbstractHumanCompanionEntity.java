@@ -4,10 +4,7 @@ import com.github.justinwon777.humancompanions.HumanCompanions;
 import com.github.justinwon777.humancompanions.container.CompanionContainer;
 import com.github.justinwon777.humancompanions.core.EntityInit;
 import com.github.justinwon777.humancompanions.entity.ai.*;
-import com.github.justinwon777.humancompanions.mixin.ServerPlayerMixin;
-import com.github.justinwon777.humancompanions.networking.PacketHandler;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,10 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.*;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -34,7 +28,10 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.npc.InventoryCarrier;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
@@ -44,12 +41,12 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.apache.commons.lang3.ArrayUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class AbstractHumanCompanionEntity extends TamableAnimal {
-
+public class AbstractHumanCompanionEntity extends TamableAnimal implements ExtendedScreenHandlerFactory, InventoryCarrier {
     private static final EntityDataAccessor<Integer> DATA_TYPE_ID = SynchedEntityData.defineId(AbstractHumanCompanionEntity.class,
             EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SEX = SynchedEntityData.defineId(AbstractHumanCompanionEntity.class,
@@ -356,14 +353,17 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
         if (player.containerMenu != player.inventoryMenu) {
             player.closeContainer();
         }
+        /*
         ((ServerPlayerMixin) player).humancompanions$nextContainerCounterInvoker();
         FriendlyByteBuf buf = PacketByteBufs.create();
         buf.writeInt(((ServerPlayerMixin) player).humancompanions$containerCounterAccessor());
         buf.writeInt(this.inventory.getContainerSize());
         buf.writeInt(this.getId());
         ServerPlayNetworking.send(player, PacketHandler.OPEN_INVENTORY_ID, PacketByteBufs.empty());
-        player.containerMenu = new CompanionContainer(((ServerPlayerMixin) player).humancompanions$containerCounterAccessor(), player.getInventory(), this.inventory);
+              player.containerMenu = new CompanionContainer(((ServerPlayerMixin) player).humancompanions$containerCounterAccessor(), player.getInventory(), this.inventory);
         ((ServerPlayerMixin) player).humancompanions$initMenuInvoker(player.containerMenu);
+         */
+        player.openMenu(this);
     }
 
     public void checkArmor() {
@@ -471,8 +471,8 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
     public boolean doHurtTarget(Entity entity) {
         ItemStack itemstack = this.getMainHandItem();
         if (!this.level().isClientSide && !itemstack.isEmpty() && entity instanceof LivingEntity) {
-            itemstack.hurtAndBreak(1, this, (p_43296_) -> {
-                p_43296_.broadcastBreakEvent(EquipmentSlot.MAINHAND);
+            itemstack.hurtAndBreak(1, this, (companion) -> {
+                companion.broadcastBreakEvent(EquipmentSlot.MAINHAND);
             });
             if (this.getMainHandItem().isEmpty()) {
                 Component broken = Component.literal("My weapon broke!");
@@ -788,4 +788,23 @@ public class AbstractHumanCompanionEntity extends TamableAnimal {
         }
     }
 
+    @Override
+    public void writeScreenOpeningData(ServerPlayer serverPlayer, FriendlyByteBuf friendlyByteBuf) {
+        friendlyByteBuf.writeInt(this.inventory.getContainerSize());
+        friendlyByteBuf.writeInt(this.getId());
+    }
+
+    @Override
+    public @NotNull SimpleContainer getInventory() {
+        return this.inventory;
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int syncID, Inventory playerInventory, Player player) {
+        return new CompanionContainer(syncID, playerInventory, this.inventory, this.getId());
+    }
+
+    public static AttributeSupplier.@NotNull Builder createMobAttributes() {
+        return Mob.createMobAttributes().add(Attributes.ATTACK_DAMAGE);
+    }
 }

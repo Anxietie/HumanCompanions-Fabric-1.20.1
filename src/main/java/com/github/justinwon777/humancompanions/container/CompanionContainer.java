@@ -1,38 +1,52 @@
 package com.github.justinwon777.humancompanions.container;
 
+import com.github.justinwon777.humancompanions.HumanCompanions;
+import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class CompanionContainer extends AbstractContainerMenu {
     private final Container container;
+    private final int companionID;
+    // private @Nullable AbstractHumanCompanionEntity companion;
     private final int containerRows;
 
-    public CompanionContainer(int p_39230_, Inventory p_39231_, Container p_39232_) {
-        super(null, p_39230_);
-        checkContainerSize(p_39232_, 3 * 9);
-        this.container = p_39232_;
+    public CompanionContainer(int syncID, Inventory playerInventory, FriendlyByteBuf buf) {
+        this(syncID, playerInventory, new SimpleContainer(buf.readInt()), buf.readInt());
+    }
+
+    public CompanionContainer(int syncID, Inventory playerInventory, Container companionInventory, int companionID) {
+        super(HumanCompanions.COMPANION_CONTAINER_MENU_TYPE, syncID);
+        this.companionID = companionID;
+        checkContainerSize(companionInventory, 3 * 9);
+        this.container = companionInventory;
         this.containerRows = 3;
-        p_39232_.startOpen(p_39231_.player);
+        companionInventory.startOpen(playerInventory.player);
         int i = (this.containerRows - 4) * 18;
 
         for (int j = 0; j < this.containerRows; ++j) {
             for (int k = 0; k < 9; ++k) {
-                this.addSlot(new Slot(p_39232_, k + j * 9, 8 + k * 18, 18 + j * 18));
+                this.addSlot(new Slot(companionInventory, k + j * 9, 8 + k * 18, 18 + j * 18));
             }
         }
 
         for (int l = 0; l < 3; ++l) {
             for (int j1 = 0; j1 < 9; ++j1) {
-                this.addSlot(new Slot(p_39231_, j1 + l * 9 + 9, 8 + j1 * 18, 103 + l * 18 + i));
+                this.addSlot(new Slot(playerInventory, j1 + l * 9 + 9, 8 + j1 * 18, 103 + l * 18 + i));
             }
         }
 
         for (int i1 = 0; i1 < 9; ++i1) {
-            this.addSlot(new Slot(p_39231_, i1, 8 + i1 * 18, 161 + i));
+            this.addSlot(new Slot(playerInventory, i1, 8 + i1 * 18, 161 + i));
         }
 
     }
@@ -65,12 +79,16 @@ public class CompanionContainer extends AbstractContainerMenu {
         return itemstack;
     }
 
-    public void removed(Player p_39251_) {
-        super.removed(p_39251_);
-        this.container.stopOpen(p_39251_);
+    public void removed(Player player) {
+        super.removed(player);
+        this.container.stopOpen(player);
     }
 
     public int getRowCount() {
         return this.containerRows;
+    }
+
+    public int getCompanionID() {
+        return this.companionID;
     }
 }
