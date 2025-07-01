@@ -1,10 +1,6 @@
 package com.github.justinwon777.humancompanions.entity.ai;
 
-import java.util.EnumSet;
-import java.util.function.Predicate;
-
 import com.github.justinwon777.humancompanions.HumanCompanions;
-import com.github.justinwon777.humancompanions.core.Config;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,6 +11,9 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.EnumSet;
+import java.util.function.Predicate;
 
 public class AvoidCreeperGoal<T extends LivingEntity> extends Goal {
     protected final TamableAnimal mob;

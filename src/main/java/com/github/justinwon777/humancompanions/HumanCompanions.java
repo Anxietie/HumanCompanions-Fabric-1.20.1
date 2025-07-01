@@ -1,6 +1,8 @@
 package com.github.justinwon777.humancompanions;
 
-import com.github.justinwon777.humancompanions.core.*;
+import com.github.justinwon777.humancompanions.core.Config;
+import com.github.justinwon777.humancompanions.core.EntityInit;
+import com.github.justinwon777.humancompanions.core.ItemInit;
 import com.github.justinwon777.humancompanions.entity.CompanionEvents;
 import com.github.justinwon777.humancompanions.networking.PacketHandler;
 import net.fabricmc.api.ModInitializer;

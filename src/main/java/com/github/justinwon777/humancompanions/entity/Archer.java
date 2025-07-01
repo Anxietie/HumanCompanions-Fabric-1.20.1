@@ -1,7 +1,6 @@
 package com.github.justinwon777.humancompanions.entity;
 
 import com.github.justinwon777.humancompanions.HumanCompanions;
-import com.github.justinwon777.humancompanions.core.Config;
 import com.github.justinwon777.humancompanions.entity.ai.ArcherRangedBowAttackGoal;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

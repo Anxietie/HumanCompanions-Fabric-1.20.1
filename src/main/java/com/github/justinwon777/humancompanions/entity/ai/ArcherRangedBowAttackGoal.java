@@ -1,7 +1,6 @@
 package com.github.justinwon777.humancompanions.entity.ai;
 
 import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEntity;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.monster.RangedAttackMob;

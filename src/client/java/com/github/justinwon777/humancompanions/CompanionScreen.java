@@ -1,11 +1,11 @@
 package com.github.justinwon777.humancompanions;
 
 import com.github.justinwon777.humancompanions.container.CompanionContainer;
-import com.github.justinwon777.humancompanions.networking.PacketHandler;
 import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEntity;
 import com.github.justinwon777.humancompanions.entity.Arbalist;
 import com.github.justinwon777.humancompanions.entity.Archer;
 import com.github.justinwon777.humancompanions.entity.Knight;
+import com.github.justinwon777.humancompanions.networking.PacketHandler;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

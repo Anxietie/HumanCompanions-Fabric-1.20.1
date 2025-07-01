@@ -1,7 +1,7 @@
 package com.github.justinwon777.humancompanions.networking;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import com.github.justinwon777.humancompanions.networking.packet.OpenInventoryPacket;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
 public class ClientPacketHandler {
     public static void register() {

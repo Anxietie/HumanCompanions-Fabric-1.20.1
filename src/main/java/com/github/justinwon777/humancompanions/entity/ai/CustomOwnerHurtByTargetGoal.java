@@ -1,14 +1,13 @@
 package com.github.justinwon777.humancompanions.entity.ai;
 
-import java.util.EnumSet;
-
 import com.github.justinwon777.humancompanions.HumanCompanions;
-import com.github.justinwon777.humancompanions.core.Config;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+
+import java.util.EnumSet;
 
 public class CustomOwnerHurtByTargetGoal extends TargetGoal {
     private final TamableAnimal tameAnimal;
