@@ -2,24 +2,25 @@ package com.github.justinwon777.humancompanions;
 
 import com.github.justinwon777.humancompanions.core.*;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static com.github.justinwon777.humancompanions.core.ItemInit.*;
 
-@Mod(HumanCompanions.MOD_ID)
 public class HumanCompanions implements ModInitializer {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final String MOD_ID = "humancompanions";
+    private static Config config;
 
     @Override
     public void onInitialize() {
+        config = new Config(FabricLoader.getInstance().getConfigDir(), String.format("%s_config.json", MOD_ID));
+    }
 
+    public static Config getConfig() {
+        return config;
     }
 
     public HumanCompanions() {

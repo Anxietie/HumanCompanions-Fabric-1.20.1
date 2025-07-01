@@ -1,58 +1,123 @@
 package com.github.justinwon777.humancompanions.core;
 
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.config.ModConfig;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+
+import static com.github.justinwon777.humancompanions.HumanCompanions.LOGGER;
+
+// rudimentary config
 public class Config {
+    public int AVERAGE_HOUSE_SEPARATION = 20; // int (11,20)
+    public boolean FRIENDLY_FIRE_COMPANIONS = true; // boolean
+    public boolean FRIENDLY_FIRE_PLAYER = true; // boolean
+    public boolean FALL_DAMAGE = true; // boolean
+    public boolean SPAWN_ARMOR = true; // boolean
+    public boolean SPAWN_WEAPON = true; // boolean
+    public int BASE_HEALTH = 20; // int (5,20)
+    public boolean LOW_HEALTH_FOOD = true; // boolean
+    public boolean CREEPER_WARNING = true; // boolean
 
-    public static ForgeConfigSpec.IntValue AVERAGE_HOUSE_SEPARATION;
-    public static ForgeConfigSpec.BooleanValue FRIENDLY_FIRE_COMPANIONS;
-    public static ForgeConfigSpec.BooleanValue FRIENDLY_FIRE_PLAYER;
-    public static ForgeConfigSpec.BooleanValue FALL_DAMAGE;
-    public static ForgeConfigSpec.BooleanValue SPAWN_ARMOR;
-    public static ForgeConfigSpec.BooleanValue SPAWN_WEAPON;
-    public static ForgeConfigSpec.IntValue BASE_HEALTH;
-    public static ForgeConfigSpec.BooleanValue LOW_HEALTH_FOOD;
-    public static ForgeConfigSpec.BooleanValue CREEPER_WARNING;
+    private final Path configFilePath;
 
-    public static void register() {
-        registerCommonConfig();
+    public Config(Path dir, String filename) {
+        this.configFilePath = dir.resolve(filename);
+        File configFile = configFilePath.toFile();
+
+        // create parent directories if they don't exist
+        dir.toFile().mkdirs();
+        try {
+            // check if config already exists
+            if (!configFile.createNewFile()) {
+                LOGGER.info("Found config.json in {}", configFile.getPath());
+                readFromConfig(configFile);
+                return;
+            }
+        }
+        catch (IOException ioe) {
+            LOGGER.error("Could not create config file or directories at {}", configFile.getPath());
+            ioe.printStackTrace();
+            return;
+        }
+
+        createDefaultConfig(configFile);
     }
 
-    private static void registerCommonConfig() {
-        ForgeConfigSpec.Builder COMMON_BUILDER = new ForgeConfigSpec.Builder();
-        COMMON_BUILDER.comment("Settings for world gen (Doesn't work in 1.18.2 and beyond. Use datapacks instead.)").push("World" +
-                " Gen");
-        AVERAGE_HOUSE_SEPARATION = COMMON_BUILDER
-                .comment("Average chunk separation between companion houses")
-                .defineInRange("averageHouseSeparation", 20, 11, Integer.MAX_VALUE);
-        COMMON_BUILDER.pop();
-        COMMON_BUILDER.push("Companion config");
-        FRIENDLY_FIRE_COMPANIONS = COMMON_BUILDER
-                .comment("Toggles friendly fire between companions")
-                .define("friendlyFireCompanions", false);
-        FRIENDLY_FIRE_PLAYER = COMMON_BUILDER
-                .comment("Toggles friendly fire between player and companion")
-                .define("friendlyFirePlayer", true);
-        FALL_DAMAGE = COMMON_BUILDER
-                .comment("Toggles fall damage for companions")
-                .define("fallDamage", true);
-        SPAWN_ARMOR = COMMON_BUILDER
-                .comment("Toggles whether companions spawn with armor")
-                .define("spawnArmor", true);
-        SPAWN_WEAPON = COMMON_BUILDER
-                .comment("Toggles whether companions spawn with a weapon")
-                .define("spawnWeapon", true);
-        BASE_HEALTH = COMMON_BUILDER
-                .comment("Sets the base health of each companion. Companions spawn with up to +-4 from the base health")
-                .defineInRange("baseHealth", 20, 5, Integer.MAX_VALUE);
-        LOW_HEALTH_FOOD = COMMON_BUILDER
-                .comment("Toggles whether companions ask for food if their health goes below half.")
-                .define("lowHealthFood", true);
-        CREEPER_WARNING = COMMON_BUILDER
-                .comment("Toggles whether companions alert you if a creeper is nearby.")
-                .define("creeperWarning", true);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, COMMON_BUILDER.build());
+    public void reloadConfig() {
+        readFromConfig(configFilePath.toFile());
+    }
+
+    private void createDefaultConfig(File configFile) {
+        JsonWriter writer = null;
+
+        try {
+            writer = new JsonWriter(new FileWriter(configFile, StandardCharsets.UTF_8));
+            writer.setIndent("  ");
+            writer.beginObject();
+            writer.name("average_house_separation").value(AVERAGE_HOUSE_SEPARATION);
+            writer.name("friendly_fire_companions").value(FRIENDLY_FIRE_COMPANIONS);
+            writer.name("friendly_fire_player").value(FRIENDLY_FIRE_PLAYER);
+            writer.name("fall_damage").value(FALL_DAMAGE);
+            writer.name("spawn_armor").value(SPAWN_ARMOR);
+            writer.name("spawn_weapon").value(SPAWN_WEAPON);
+            writer.name("base_health").value(BASE_HEALTH);
+            writer.name("low_health_food").value(LOW_HEALTH_FOOD);
+            writer.name("creeper_warning").value(CREEPER_WARNING);
+            writer.endObject();
+        } catch (IOException ioe) {
+            LOGGER.error("Could not begin write to config");
+            ioe.printStackTrace();
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException ioe) {
+                    LOGGER.error("Unable to close config file after writing");
+                    ioe.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private void readFromConfig(File configFile) {
+        Gson gson = new Gson();
+        JsonReader reader = null;
+
+        try {
+            reader = new JsonReader(new FileReader(configFile, StandardCharsets.UTF_8));
+            JsonObject object = gson.fromJson(reader, JsonObject.class);
+            AVERAGE_HOUSE_SEPARATION = object.get("average_house_separation").getAsInt();
+            FRIENDLY_FIRE_COMPANIONS = object.get("friendly_fire_companions").getAsBoolean();
+            FRIENDLY_FIRE_PLAYER = object.get("friendly_fire_player").getAsBoolean();
+            FALL_DAMAGE = object.get("fall_damage").getAsBoolean();
+            SPAWN_ARMOR = object.get("spawn_armor").getAsBoolean();
+            SPAWN_WEAPON = object.get("spawn_weapon").getAsBoolean();
+            BASE_HEALTH = object.get("base_health").getAsInt();
+            LOW_HEALTH_FOOD = object.get("low_health_food").getAsBoolean();
+            CREEPER_WARNING = object.get("creeper_warning").getAsBoolean();
+        }
+        catch (IOException ioe) {
+            LOGGER.error("Unable to read from config");
+            ioe.printStackTrace();
+        }
+        finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                }
+                catch (IOException ioe) {
+                    LOGGER.error("Unable to close config file");
+                    ioe.printStackTrace();
+                }
+            }
+        }
     }
 }
