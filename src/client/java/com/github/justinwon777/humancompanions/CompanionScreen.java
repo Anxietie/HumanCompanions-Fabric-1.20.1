@@ -119,13 +119,13 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
                 12, 0
                 , 0, 13,
                 ALERT_BUTTON,
-                btn -> ClientPlayNetworking.send(PacketHandler.SET_ALERT_ID, buf))
+                btn -> ClientPlayNetworking.send(PacketHandler.SET_ALERT_ID, PacketByteBufs.copy(buf)))
         );
         this.huntingButton = addRenderableWidget(new CompanionButton("hunting", col2, row1,
                 16,
                 12, 0, 0,13,
                 HUNTING_BUTTON,
-                btn -> ClientPlayNetworking.send(PacketHandler.SET_HUNTING_ID, buf))
+                btn -> ClientPlayNetworking.send(PacketHandler.SET_HUNTING_ID, PacketByteBufs.copy(buf)))
         );
         this.patrolButton = addRenderableWidget(new CompanionButton("patrolling", col1, row2,
                 16,
@@ -133,7 +133,7 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
                 0, 0
                 ,13,
                 PATROL_BUTTON,
-                btn -> ClientPlayNetworking.send(PacketHandler.SET_PATROLLING_ID, buf))
+                btn -> ClientPlayNetworking.send(PacketHandler.SET_PATROLLING_ID, PacketByteBufs.copy(buf)))
         );
         if (companion instanceof Archer || companion instanceof Arbalist) {
             this.stationeryButton = addRenderableWidget(new CompanionButton("stationery", col2,
@@ -143,14 +143,14 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
                     0, 0
                     , 13,
                     STATIONERY_BUTTON,
-                    btn -> ClientPlayNetworking.send(PacketHandler.SET_STATIONARY_ID, buf))
+                    btn -> ClientPlayNetworking.send(PacketHandler.SET_STATIONARY_ID, PacketByteBufs.copy(buf)))
             );
         }
         this.clearButton = addRenderableWidget(new CompanionButton("clear", leftPos + sidebarx + 5, row3, 31,
                 12, 0, 0
                 ,13,
                 CLEAR_BUTTON,
-                btn -> ClientPlayNetworking.send(PacketHandler.CLEAR_TARGET_ID, buf))
+                btn -> ClientPlayNetworking.send(PacketHandler.CLEAR_TARGET_ID, PacketByteBufs.copy(buf)))
         );
         this.releaseButton = addRenderableWidget(new CompanionButton("release", leftPos + sidebarx + 3, topPos + 148,
                 34,
@@ -158,7 +158,7 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
                 ,13,
                 RELEASE_BUTTON,
                 btn -> {
-                    ClientPlayNetworking.send(PacketHandler.RELEASE_ID, buf);
+                    ClientPlayNetworking.send(PacketHandler.RELEASE_ID, PacketByteBufs.copy(buf));
                     this.onClose();
                 })
         );
