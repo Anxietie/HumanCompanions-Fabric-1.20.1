@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "${modid}",
+  "id": "humancompanions",
   "version": "${mod_version}",
   "name": "Human Companions",
   "description": "Human Companions for Fabric 1.20.1",
@@ -12,8 +12,8 @@
     "sources": "https://github.com/Anxietie/HumanCompanions-Fabric-1.20.1"
   },
   "license": "GPL-3.0",
-  "icon": "assets/${modid}/icon.png",
-  "accessWidener": "${modid}.accesswidener",
+  "icon": "assets/humancompanions/icon.png",
+  "accessWidener": "humancompanions.accesswidener",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -24,9 +24,9 @@
     ]
   },
   "mixins": [
-    "${modid}.mixins.json",
+    "humancompanions.mixins.json",
     {
-      "config": "${modid}.client.mixins.json",
+      "config": "humancompanions.client.mixins.json",
       "environment": "client"
     }
   ],

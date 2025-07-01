@@ -56,7 +56,6 @@ processResources {
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "loader_version", project.loader_version
     inputs.property "fabric_version", project.fabric_version
-    inputs.property "modid", project.archives_base_name
     filteringCharset "UTF-8"
 
     filesMatching("fabric.mod.json") {
@@ -64,8 +63,6 @@ processResources {
         expand "minecraft_version": inputs.properties.minecraft_version
         expand "loader_version": inputs.properties.loader_version
         expand "fabric_version": inputs.properties.fabric_version
-        expand "modid": inputs.properties.archives_base_name
-
     }
 }
 
