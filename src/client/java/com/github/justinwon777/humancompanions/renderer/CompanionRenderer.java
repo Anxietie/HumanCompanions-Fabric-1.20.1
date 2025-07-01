@@ -2,6 +2,8 @@ package com.github.justinwon777.humancompanions.renderer;
 
 import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayers;
@@ -17,9 +19,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.UseAnim;
 
-
+@Environment(EnvType.CLIENT)
 public class CompanionRenderer extends HumanoidMobRenderer<AbstractHumanCompanionEntity, PlayerModel<AbstractHumanCompanionEntity>> {
-
     public CompanionRenderer(Context context) {
         super(context, new PlayerModel(context.bakeLayer(ModelLayers.PLAYER), false), 0.5f);
         this.addLayer(new HumanoidArmorLayer<>(this,

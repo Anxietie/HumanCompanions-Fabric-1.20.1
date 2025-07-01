@@ -3,6 +3,7 @@
   "package": "com.github.justinwon777.humancompanions.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "ServerPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
