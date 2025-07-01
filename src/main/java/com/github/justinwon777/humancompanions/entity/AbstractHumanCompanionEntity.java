@@ -128,6 +128,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
         this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(9, new LowHealthGoal(this));
+        
         this.targetSelector.addGoal(1, new CustomOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new CustomOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new CustomHurtByTargetGoal(this)));
@@ -341,7 +342,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
                         }
                     } else {
                         if (!this.level().isClientSide()) {
-                            this.openGui((ServerPlayer) player);
+                            player.openMenu(this);
                         }
                     }
                 }
@@ -350,23 +351,6 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
         return super.mobInteract(player, hand);
-    }
-
-    public void openGui(ServerPlayer player) {
-        if (player.containerMenu != player.inventoryMenu) {
-            player.closeContainer();
-        }
-        /*
-        ((ServerPlayerMixin) player).humancompanions$nextContainerCounterInvoker();
-        FriendlyByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(((ServerPlayerMixin) player).humancompanions$containerCounterAccessor());
-        buf.writeInt(this.inventory.getContainerSize());
-        buf.writeInt(this.getId());
-        ServerPlayNetworking.send(player, PacketHandler.OPEN_INVENTORY_ID, PacketByteBufs.empty());
-              player.containerMenu = new CompanionContainer(((ServerPlayerMixin) player).humancompanions$containerCounterAccessor(), player.getInventory(), this.inventory);
-        ((ServerPlayerMixin) player).humancompanions$initMenuInvoker(player.containerMenu);
-         */
-        player.openMenu(this);
     }
 
     public void checkArmor() {
