@@ -65,15 +65,6 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
     int col1;
     int col2;
 
-    /*
-    public CompanionScreen(CompanionContainer container, Inventory playerInventory, Component title) {
-        super(container, playerInventory, title);
-        companion = null;
-        containerRows = 0;
-    }
-
-     */
-
     public CompanionScreen(CompanionContainer container, Inventory pPlayerInventory, Component title) {
         super(container, pPlayerInventory, title);
         this.companion = (AbstractHumanCompanionEntity) Minecraft.getInstance().level.getEntity(container.getCompanionID());
