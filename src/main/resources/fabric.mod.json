@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "humancompanions",
-  "version": "${mod_version}",
+  "version": "${version}",
   "name": "Human Companions",
   "description": "Human Companions for Fabric 1.20.1",
   "authors": [
