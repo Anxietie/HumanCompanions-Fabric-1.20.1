@@ -24,8 +24,7 @@ public class CompanionEvents {
             if (source.getEntity() != null && source.getEntity() instanceof AbstractHumanCompanionEntity) {
                 if (entity instanceof AbstractHumanCompanionEntity attackedCompanion && attackedCompanion.isTame()) {
                     return HumanCompanions.getConfig().FRIENDLY_FIRE_COMPANIONS;
-                }
-                else if (entity instanceof Player) {
+                } else if (entity instanceof Player) {
                     return HumanCompanions.getConfig().FRIENDLY_FIRE_PLAYER;
                 }
             }

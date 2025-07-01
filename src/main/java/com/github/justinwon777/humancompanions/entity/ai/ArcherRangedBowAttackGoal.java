@@ -84,8 +84,7 @@ public class ArcherRangedBowAttackGoal<T extends AbstractHumanCompanionEntity & 
                 if (!flag || d0 > (double) this.attackRadiusSqr) {
                     this.mob.clearTarget();
                 }
-            }
-            else {
+            } else {
                 if (!(d0 > (double) this.attackRadiusSqr) && this.seeTime >= 20) {
                     this.mob.getNavigation().stop();
                     ++this.strafingTime;

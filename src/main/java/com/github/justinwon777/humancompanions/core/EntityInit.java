@@ -13,31 +13,32 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 
 public final class EntityInit {
     public static final EntityType<Arbalist> ARBALIST = registerLivingEntity("arbalist", EntityType.Builder.of(
-            Arbalist::new,
-            MobCategory.AMBIENT)
-            .sized(0.6f, 1.8f),
+                            Arbalist::new,
+                            MobCategory.AMBIENT)
+                    .sized(0.6f, 1.8f),
             AbstractHumanCompanionEntity.createMobAttributes()
     );
     public static final EntityType<Archer> ARCHER = registerLivingEntity("archer", EntityType.Builder.of(
-            Archer::new,
-            MobCategory.AMBIENT)
-            .sized(0.6f, 1.8f),
+                            Archer::new,
+                            MobCategory.AMBIENT)
+                    .sized(0.6f, 1.8f),
             AbstractHumanCompanionEntity.createMobAttributes()
     );
     public static final EntityType<Axeguard> AXEGUARD = registerLivingEntity("axeguard", EntityType.Builder.of(
-            Axeguard::new,
-            MobCategory.AMBIENT)
-            .sized(0.6f, 1.8f),
+                            Axeguard::new,
+                            MobCategory.AMBIENT)
+                    .sized(0.6f, 1.8f),
             AbstractHumanCompanionEntity.createMobAttributes()
     );
     public static final EntityType<Knight> KNIGHT = registerLivingEntity("knight", EntityType.Builder.of(
-                    Knight::new,
-                    MobCategory.AMBIENT)
-            .sized(0.6f, 1.8f),
+                            Knight::new,
+                            MobCategory.AMBIENT)
+                    .sized(0.6f, 1.8f),
             AbstractHumanCompanionEntity.createMobAttributes()
     );
 
-    public static void registerEntities() {}
+    public static void registerEntities() {
+    }
 
     private static <T extends LivingEntity> EntityType<T> registerLivingEntity(String path, EntityType.Builder<T> builder, AttributeSupplier.Builder supplier) {
         EntityType<T> entityType = Registry.register(BuiltInRegistries.ENTITY_TYPE, new ResourceLocation(HumanCompanions.MOD_ID, path), builder.build(path));

@@ -35,7 +35,7 @@ import java.util.Optional;
 @Environment(EnvType.CLIENT)
 public class CompanionScreen extends AbstractContainerScreen<CompanionContainer> implements MenuAccess<CompanionContainer> {
     private static final ResourceLocation CONTAINER_BACKGROUND = new ResourceLocation(HumanCompanions.MOD_ID,
-        "textures/inventory.png");
+            "textures/inventory.png");
     private static final ResourceLocation ALERT_BUTTON = new ResourceLocation(HumanCompanions.MOD_ID, "textures/alertbutton.png");
     private static final ResourceLocation HUNTING_BUTTON = new ResourceLocation(HumanCompanions.MOD_ID, "textures" +
             "/huntingbutton.png");
@@ -123,7 +123,7 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
         );
         this.huntingButton = addRenderableWidget(new CompanionButton("hunting", col2, row1,
                 16,
-                12, 0, 0,13,
+                12, 0, 0, 13,
                 HUNTING_BUTTON,
                 btn -> ClientPlayNetworking.send(PacketHandler.SET_HUNTING_ID, PacketByteBufs.copy(buf)))
         );
@@ -131,7 +131,7 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
                 16,
                 12,
                 0, 0
-                ,13,
+                , 13,
                 PATROL_BUTTON,
                 btn -> ClientPlayNetworking.send(PacketHandler.SET_PATROLLING_ID, PacketByteBufs.copy(buf)))
         );
@@ -148,14 +148,14 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
         }
         this.clearButton = addRenderableWidget(new CompanionButton("clear", leftPos + sidebarx + 5, row3, 31,
                 12, 0, 0
-                ,13,
+                , 13,
                 CLEAR_BUTTON,
                 btn -> ClientPlayNetworking.send(PacketHandler.CLEAR_TARGET_ID, PacketByteBufs.copy(buf)))
         );
         this.releaseButton = addRenderableWidget(new CompanionButton("release", leftPos + sidebarx + 3, topPos + 148,
                 34,
                 12, 0, 0
-                ,13,
+                , 13,
                 RELEASE_BUTTON,
                 btn -> {
                     ClientPlayNetworking.send(PacketHandler.RELEASE_ID, PacketByteBufs.copy(buf));
@@ -295,7 +295,7 @@ public class CompanionScreen extends AbstractContainerScreen<CompanionContainer>
             } else if (this.name.equals("patrolling")) {
                 if (CompanionScreen.this.companion.isFollowing()) {
                     this.xTexStart = 0;
-                } else if (CompanionScreen.this.companion.isPatrolling()){
+                } else if (CompanionScreen.this.companion.isPatrolling()) {
                     this.xTexStart = 17;
                 } else {
                     this.xTexStart = 34;

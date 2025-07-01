@@ -1,9 +1,6 @@
 package com.github.justinwon777.humancompanions.container;
 
 import com.github.justinwon777.humancompanions.HumanCompanions;
-import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -12,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 public class CompanionContainer extends AbstractContainerMenu {
     private final Container container;

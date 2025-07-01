@@ -12,7 +12,7 @@ public class LowHealthGoal extends Goal {
     Component text = Component.literal("I need food!");
     ItemStack food = ItemStack.EMPTY;
 
-    public LowHealthGoal (AbstractHumanCompanionEntity entity) {
+    public LowHealthGoal(AbstractHumanCompanionEntity entity) {
         this.mob = entity;
     }
 
@@ -31,7 +31,7 @@ public class LowHealthGoal extends Goal {
         startTick = this.mob.tickCount;
         if (this.mob.getOwner() != null) {
             this.mob.getOwner().sendSystemMessage(Component.translatable("chat.type.text", this.mob.getDisplayName(),
-                            text));
+                    text));
         }
     }
 
@@ -39,7 +39,7 @@ public class LowHealthGoal extends Goal {
         if ((this.mob.tickCount - startTick) % (15 * 20) == 0 && this.mob.tickCount > startTick) {
             if (this.mob.getOwner() != null) {
                 this.mob.getOwner().sendSystemMessage(Component.translatable("chat.type.text", this.mob.getDisplayName(),
-                                text));
+                        text));
             }
         }
 

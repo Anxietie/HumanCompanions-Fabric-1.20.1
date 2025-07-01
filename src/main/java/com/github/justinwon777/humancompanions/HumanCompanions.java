@@ -8,7 +8,6 @@ import com.github.justinwon777.humancompanions.entity.CompanionEvents;
 import com.github.justinwon777.humancompanions.networking.PacketHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;

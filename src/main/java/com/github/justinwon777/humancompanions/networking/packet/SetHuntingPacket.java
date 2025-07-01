@@ -20,8 +20,7 @@ public class SetHuntingPacket {
             companion.setHunting(!companion.isHunting());
             if (companion.isHunting()) {
                 companion.addHuntingGoals();
-            }
-            else {
+            } else {
                 companion.removeHuntingGoals();
             }
         }

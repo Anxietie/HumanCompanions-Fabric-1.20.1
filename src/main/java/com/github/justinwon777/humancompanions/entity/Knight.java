@@ -21,7 +21,7 @@ public class Knight extends AbstractHumanCompanionEntity {
     }
 
     public boolean isSword(ItemStack stack) {
-    	return stack.is(ItemTags.SWORDS) || (!stack.is(ItemTags.AXES) && stack.getItem() instanceof SwordItem);
+        return stack.is(ItemTags.SWORDS) || (!stack.is(ItemTags.AXES) && stack.getItem() instanceof SwordItem);
     }
 
     public void checkSword() {
@@ -69,9 +69,9 @@ public class Knight extends AbstractHumanCompanionEntity {
 
     public ItemStack getSpawnSword() {
         float materialFloat = this.random.nextFloat();
-        if(materialFloat < 0.5F) {
+        if (materialFloat < 0.5F) {
             return Items.WOODEN_SWORD.getDefaultInstance();
-        } else if(materialFloat < 0.90F) {
+        } else if (materialFloat < 0.90F) {
             return Items.STONE_SWORD.getDefaultInstance();
         } else {
             return Items.IRON_SWORD.getDefaultInstance();

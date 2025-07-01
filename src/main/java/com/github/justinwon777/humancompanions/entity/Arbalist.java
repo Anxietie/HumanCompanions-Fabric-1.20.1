@@ -94,7 +94,7 @@ public class Arbalist extends AbstractHumanCompanionEntity implements CrossbowAt
 
     public ItemStack getProjectile(ItemStack p_33038_) {
         if (p_33038_.getItem() instanceof ProjectileWeaponItem) {
-            Predicate<ItemStack> predicate = ((ProjectileWeaponItem)p_33038_.getItem()).getSupportedHeldProjectiles();
+            Predicate<ItemStack> predicate = ((ProjectileWeaponItem) p_33038_.getItem()).getSupportedHeldProjectiles();
             ItemStack itemstack = ProjectileWeaponItem.getHeldProjectile(this, predicate);
             return itemstack.isEmpty() ? new ItemStack(Items.ARROW) : itemstack;
         } else {

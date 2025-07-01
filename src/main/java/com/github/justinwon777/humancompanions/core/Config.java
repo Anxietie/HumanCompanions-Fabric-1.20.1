@@ -41,8 +41,7 @@ public class Config {
                 readFromConfig(configFile);
                 return;
             }
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             LOGGER.error("Could not create config file or directories at {}", configFile.getPath());
             ioe.printStackTrace();
             return;
@@ -104,17 +103,14 @@ public class Config {
             BASE_HEALTH = object.get("base_health").getAsInt();
             LOW_HEALTH_FOOD = object.get("low_health_food").getAsBoolean();
             CREEPER_WARNING = object.get("creeper_warning").getAsBoolean();
-        }
-        catch (IOException ioe) {
+        } catch (IOException ioe) {
             LOGGER.error("Unable to read from config");
             ioe.printStackTrace();
-        }
-        finally {
+        } finally {
             if (reader != null) {
                 try {
                     reader.close();
-                }
-                catch (IOException ioe) {
+                } catch (IOException ioe) {
                     LOGGER.error("Unable to close config file");
                     ioe.printStackTrace();
                 }

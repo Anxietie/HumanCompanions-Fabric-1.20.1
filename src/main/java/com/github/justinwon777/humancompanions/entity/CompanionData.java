@@ -19,7 +19,7 @@ public class CompanionData {
 
     public static Random rand = new Random();
 
-    public static Item[] ALL_FOODS = new Item[] {
+    public static Item[] ALL_FOODS = new Item[]{
 //            Items.CAKE,
             Items.COOKIE,
             Items.BREAD,
@@ -121,8 +121,8 @@ public class CompanionData {
     };
 
     // skins[0] == male, skins[1] == female
-    public static ResourceLocation[][] skins = new ResourceLocation[][] {
-            new ResourceLocation[] {
+    public static ResourceLocation[][] skins = new ResourceLocation[][]{
+            new ResourceLocation[]{
                     new ResourceLocation(HumanCompanions.MOD_ID, "textures/entities/male/medieval-man-hugh.png"),
                     new ResourceLocation(HumanCompanions.MOD_ID, "textures/entities/male/alexandros.png"),
                     new ResourceLocation(HumanCompanions.MOD_ID, "textures/entities/male/cyrus.png"),
@@ -144,7 +144,7 @@ public class CompanionData {
                     new ResourceLocation(HumanCompanions.MOD_ID, "textures/entities/male/rustic-farmer.png"),
                     new ResourceLocation(HumanCompanions.MOD_ID, "textures/entities/male/medieval-villager.png"),
             },
-            new ResourceLocation[] {
+            new ResourceLocation[]{
                     new ResourceLocation(HumanCompanions.MOD_ID, "textures/entities/female/a-rogue-i-guess.png"),
                     new ResourceLocation(HumanCompanions.MOD_ID, "textures/entities/female/deidre-gramville.png"),
                     new ResourceLocation(HumanCompanions.MOD_ID, "textures/entities/female/deidre-gramville2.png"),
@@ -187,8 +187,8 @@ public class CompanionData {
         float materialFloat = rand.nextFloat();
         if (materialFloat <= 0.4F) {
             return ItemStack.EMPTY;
-        } else if(materialFloat <= 0.70F) {
-            switch(armorType) {
+        } else if (materialFloat <= 0.70F) {
+            switch (armorType) {
                 case HEAD:
                     return Items.LEATHER_HELMET.getDefaultInstance();
                 case CHEST:
@@ -198,8 +198,8 @@ public class CompanionData {
                 case FEET:
                     return Items.LEATHER_BOOTS.getDefaultInstance();
             }
-        } else if(materialFloat <= 0.90F) {
-            switch(armorType) {
+        } else if (materialFloat <= 0.90F) {
+            switch (armorType) {
                 case HEAD:
                     return Items.CHAINMAIL_HELMET.getDefaultInstance();
                 case CHEST:
@@ -210,7 +210,7 @@ public class CompanionData {
                     return Items.CHAINMAIL_BOOTS.getDefaultInstance();
             }
         } else {
-            switch(armorType) {
+            switch (armorType) {
                 case HEAD:
                     return Items.IRON_HELMET.getDefaultInstance();
                 case CHEST:
@@ -234,7 +234,7 @@ public class CompanionData {
     // Names source: https://github.com/ironarachne/namegen/blob/main/swedishnames.go
     // firstNames[0] == male, firstNames[1] == female
     public static String[][] firstNames = new String[][]{
-            new String[] {
+            new String[]{
                     "Abraham", "Adam", "Acke", "Adolf", "Albert", "Albin", "Albrecht", "Alexander", "Alf", "Alfred", "Algot",
                     "Alvar", "Anders", "Andreas", "Arne", "Aron", "Arthur", "Arvid", "Axel",
                     "Bengt", "Bernhard", "Bernt", "Bertil", "Birger", "Bjarne", "Bo", "Bosse", "Bror", "Cai", "Caj", "Carl",
@@ -252,24 +252,24 @@ public class CompanionData {
                     "Ola", "Oliver", "Olle", "Olaf", "Olof", "Olov", "Orvar", "Osvald", "Otto", "Ove",
                     "Patrik", "Peder", "Pehr", "Pelle", "Per", "Peter", "Petter", "Pontus", "Ragnar", "Ragnvald", "Rickard",
                     "Rikard", "Robert", "Roffe", "Samuel", "Sigfrid", "Sigge", "Sigvard", "Sivert", "Sixten", "Staffan",
-                    "Stefan", "Stellan", "Stig", "Sune", "Svante", "Sven",  "Tage", "Thor", "Thore", "Thorsten", "Thorvald",
+                    "Stefan", "Stellan", "Stig", "Sune", "Svante", "Sven", "Tage", "Thor", "Thore", "Thorsten", "Thorvald",
                     "Tomas", "Tor", "Tore", "Torgny", "Torkel", "Torsten", "Torvald", "Truls", "Tryggve", "Ture", "Ulf",
-                    "Ulrik", "Uno", "Urban", "Valdemar", "Valter", "Verg",  "Verner", "Victor", "Vidar", "Vide", "Viggo",
+                    "Ulrik", "Uno", "Urban", "Valdemar", "Valter", "Verg", "Verner", "Victor", "Vidar", "Vide", "Viggo",
                     "Viktor", "Vilhelm", "Ville", "Vilmar", "Yngve",
             },
-            new String[] {
+            new String[]{
                     "Agda", "Agneta", "Agnetha", "Aina", "Alfhild", "Alicia", "Alva", "Anette", "Anja", "Anneli", "Annika", "Asta", "Astrid",
                     "Barbro", "Bengta", "Berit", "Birgit", "Birgitta", "Bodil", "Brita", "Britt", "Britta",
                     "Cajsa", "Carin", "Carina", "Carita", "Catharina", "Cathrine", "Catrine", "Charlotta", "Christin", "Cilla",
                     "Dagny",
-                    "Ebba", "Eira", "Eleonor", "Elin", "Elina","Ellinor", "Elna", "Elsa", "Elsie", "Embla",
+                    "Ebba", "Eira", "Eleonor", "Elin", "Elina", "Ellinor", "Elna", "Elsa", "Elsie", "Embla",
                     "Emelie", "Erica", "Erika", "Erna", "Evy",
                     "Fredrika", "Freja", "Frida",
                     "Gabriella", "Gerd", "Gerda", "Gertrud", "Gittan", "Greta", "Gry", "Gudrun", "Gull", "Gunborg",
                     "Gunda", "Gunhild", "Gunhilda", "Gunilla", "Gunn", "Gunnel", "Gunvor",
                     "Hanna", "Hanne", "Hedda", "Hedvig", "Helga", "Henrika", "Hillevi", "Hilma", "Hulda",
                     "Idun", "Ingeborg", "Ingegerd", "Inger", "Ingrid",
-                    "Jannike", "Jennie", "Joline", "Jonna", "Josefin", "Josefina","Josefine", "Juni",
+                    "Jannike", "Jennie", "Joline", "Jonna", "Josefin", "Josefina", "Josefine", "Juni",
                     "Kaja", "Kajsa", "Kamilla", "Karin", "Karita", "Karla", "Katja", "Katrin", "Kersti", "Kerstin",
                     "Kia", "Kjerstin", "Klara", "Kristin", "Kristine",
                     "Laila", "Linn", "Linnea", "Lis", "Lisbet", "Lisbeth", "Liselott", "Liselotte", "Liv",
@@ -291,12 +291,12 @@ public class CompanionData {
 
     };
 
-    public static String[] lastNames = new String[] {
+    public static String[] lastNames = new String[]{
             "Abrahamsson", "Abramsson", "Adamsson", "Adolfsson", "Adolvsson", "Ahlberg", "Ahlgren", "Albertsson",
             "Albinsson", "Albrechtsson", "Albrecktsson", "Albrektson", "Albrektsson", "Alexanderson", "Alexandersson"
             , "Alfredsson", "Alfson", "Alfsson", "Almstedt", "Alvarsson", "Andersson", "Andreasson", "Arthursson", "Arvidsson", "Axelsson",
             "Beck", "Bengtsdotter", "Bengtsson", "Berg", "Berge", "Bergfalk", "Berggren", "Berglund", "Bergman",
-            "Bernhardsson", "Berntsson","Blom", "Blomgren", "Blomqvist", "Borg", "Breiner", "Byquist", "Byqvist",
+            "Bernhardsson", "Berntsson", "Blom", "Blomgren", "Blomqvist", "Borg", "Breiner", "Byquist", "Byqvist",
             "Carlson", "Carlsson", "Claesson", "Dahl", "Dahlman", "Danielsson",
             "Einarsson", "Ek", "Eklund", "Eld", "Eliasson", "Elmersson", "Engberg", "Engman", "Ericson", "Ericsson", "Eriksson",
             "Falk", "Feldt", "Forsberg", "Fransson", "Fredriksson", "Frisk",
@@ -311,7 +311,7 @@ public class CompanionData {
             "Norling", "Nyberg", "Nykvist", "Nylund", "Nyquist", "Nyqvist", "Olander", "Oliversson", "Olofsdotter",
             "Olofsson", "Olson", "Olsson", "Ottosson", "Patriksson", "Persson", "Petersson", "Pettersson", "Pilkvist"
             , "Ragnvaldsson", "Rapp", "Rask", "Robertsson", "Rosenberg", "Samuelsson", "Sandberg", "Sigurdsson",
-            "Simonsson", "Solberg","Sorenson", "Stefansson", "Stenberg", "Stendahl", "Stigsson", "Strand", "Sundberg"
+            "Simonsson", "Solberg", "Sorenson", "Stefansson", "Stenberg", "Stendahl", "Stigsson", "Strand", "Sundberg"
             , "Svenson", "Svensson", "Tomasson", "Ulfsson", "Victorsson", "Vinter", "Waltersson", "Wang",
             "Westerberg", "Winter", "Winther", "Wuopio",
     };

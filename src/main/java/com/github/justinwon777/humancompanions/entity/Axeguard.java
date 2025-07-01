@@ -21,9 +21,9 @@ public class Axeguard extends AbstractHumanCompanionEntity {
     }
 
     public boolean isAxe(ItemStack stack) {
-    	return stack.is(ItemTags.AXES) || (!stack.is(ItemTags.SWORDS) && stack.getItem() instanceof AxeItem);
+        return stack.is(ItemTags.AXES) || (!stack.is(ItemTags.SWORDS) && stack.getItem() instanceof AxeItem);
     }
-    
+
     public void checkAxe() {
         ItemStack hand = this.getItemBySlot(EquipmentSlot.MAINHAND);
         for (int i = 0; i < this.inventory.getContainerSize(); ++i) {
@@ -69,9 +69,9 @@ public class Axeguard extends AbstractHumanCompanionEntity {
 
     public ItemStack getSpawnAxe() {
         float materialFloat = this.random.nextFloat();
-        if(materialFloat < 0.5F) {
+        if (materialFloat < 0.5F) {
             return Items.WOODEN_AXE.getDefaultInstance();
-        } else if(materialFloat < 0.90F) {
+        } else if (materialFloat < 0.90F) {
             return Items.STONE_AXE.getDefaultInstance();
         } else {
             return Items.IRON_AXE.getDefaultInstance();

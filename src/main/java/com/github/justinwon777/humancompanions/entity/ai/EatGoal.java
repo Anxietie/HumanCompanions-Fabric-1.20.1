@@ -33,7 +33,7 @@ public class EatGoal extends Goal {
         companion.setEating(false);
     }
 
-    public void tick () {
+    public void tick() {
         if (companion.getHealth() < companion.getMaxHealth()) {
             food = companion.checkFood();
             if (!food.isEmpty()) {

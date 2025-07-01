@@ -7,7 +7,6 @@ import com.github.justinwon777.humancompanions.renderer.CompanionRenderer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.world.inventory.MenuType;
 
 public class HumanCompanionsClient implements ClientModInitializer {
@@ -19,6 +18,6 @@ public class HumanCompanionsClient implements ClientModInitializer {
         EntityRendererRegistry.register(EntityInit.KNIGHT, CompanionRenderer::new);
 
         ClientPacketHandler.register();
-        MenuScreens.register((MenuType<CompanionContainer>)HumanCompanions.COMPANION_CONTAINER_MENU_TYPE, (MenuScreens.ScreenConstructor<CompanionContainer, CompanionScreen>)CompanionScreen::new);
+        MenuScreens.register((MenuType<CompanionContainer>) HumanCompanions.COMPANION_CONTAINER_MENU_TYPE, (MenuScreens.ScreenConstructor<CompanionContainer, CompanionScreen>) CompanionScreen::new);
     }
 }

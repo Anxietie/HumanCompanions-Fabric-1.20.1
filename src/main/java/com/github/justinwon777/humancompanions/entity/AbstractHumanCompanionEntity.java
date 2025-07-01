@@ -17,7 +17,10 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
-import net.minecraft.world.*;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -69,7 +72,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
             EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> STATIONERY =
             SynchedEntityData.defineId(AbstractHumanCompanionEntity.class,
-            EntityDataSerializers.BOOLEAN);
+                    EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Optional<BlockPos>> PATROL_POS = SynchedEntityData.defineId(AbstractHumanCompanionEntity.class,
             EntityDataSerializers.OPTIONAL_BLOCK_POS);
     private static final EntityDataAccessor<Integer> PATROL_RADIUS = SynchedEntityData.defineId(AbstractHumanCompanionEntity.class,
@@ -102,7 +105,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
         super(entityType, level);
         this.setTame(false);
 //        this.setCanPickUpLoot(true);
-        ((GroundPathNavigation)this.getNavigation()).setCanOpenDoors(true);
+        ((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
         this.getNavigation().setCanFloat(true);
         for (int i = 0; i < CompanionData.alertMobs.length; i++) {
             alertMobGoals.add(new NearestAttackableTargetGoal(this, CompanionData.alertMobs[i], false));
@@ -129,7 +132,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
         this.targetSelector.addGoal(2, new CustomOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new CustomHurtByTargetGoal(this)));
     }
-    
+
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
                 .add(Attributes.FOLLOW_RANGE, 20.0D)
@@ -315,15 +318,15 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
                     }
                 } else {
                     String task =
-                            this.getDisplayName().getString().split(" ")[0] + " wants: " + foodRequirements.get(food1) + " " + food1 + ", " + foodRequirements.get(food2) + " "  + food2;
+                            this.getDisplayName().getString().split(" ")[0] + " wants: " + foodRequirements.get(food1) + " " + food1 + ", " + foodRequirements.get(food2) + " " + food2;
                     player.sendSystemMessage(Component.translatable("chat.type.text", this.getDisplayName(),
                             CompanionData.notTamed[this.random.nextInt(CompanionData.notTamed.length)]));
                     player.sendSystemMessage(Component.literal(task));
                 }
             } else {
                 if (this.isAlliedTo(player)) {
-                    if(player.isShiftKeyDown()) {
-                        if(!this.level().isClientSide()) {
+                    if (player.isShiftKeyDown()) {
+                        if (!this.level().isClientSide()) {
                             if (!this.isOrderedToSit()) {
                                 this.setOrderedToSit(true);
                                 Component text = Component.literal("I'll stand here.");
@@ -337,7 +340,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
                             }
                         }
                     } else {
-                        if(!this.level().isClientSide()) {
+                        if (!this.level().isClientSide()) {
                             this.openGui((ServerPlayer) player);
                         }
                     }
@@ -444,9 +447,9 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
                 p_150074_ = 1.0F;
             }
 
-            for(ItemStack itemstack : this.getArmorSlots()) {
+            for (ItemStack itemstack : this.getArmorSlots()) {
                 if ((!p_150073_.is(DamageTypeTags.IS_FIRE) || !itemstack.getItem().isFireResistant()) && itemstack.getItem() instanceof ArmorItem) {
-                    itemstack.hurtAndBreak((int)p_150074_, this, (p_35997_) -> {
+                    itemstack.hurtAndBreak((int) p_150074_, this, (p_35997_) -> {
                         p_35997_.broadcastBreakEvent(((ArmorItem) itemstack.getItem()).getEquipmentSlot());
                     });
                 }
@@ -498,7 +501,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
         for (int i = 0; i < this.inventory.getContainerSize(); ++i) {
             ItemStack itemstack = this.inventory.getItem(i);
             if (itemstack.isEdible()) {
-                if ((float)itemstack.getItem().getFoodProperties().getNutrition() + this.getHealth() <= this.getMaxHealth()) {
+                if ((float) itemstack.getItem().getFoodProperties().getNutrition() + this.getHealth() <= this.getMaxHealth()) {
                     return itemstack;
                 }
             }
@@ -511,24 +514,24 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
     }
 
     public void giveExperiencePoints(int pXpPoints) {
-        this.experienceProgress += (float)pXpPoints / (float)this.getXpNeededForNextLevel();
+        this.experienceProgress += (float) pXpPoints / (float) this.getXpNeededForNextLevel();
         this.totalExperience = Mth.clamp(this.totalExperience + pXpPoints, 0, Integer.MAX_VALUE);
 
-        while(this.experienceProgress < 0.0F) {
-            float f = this.experienceProgress * (float)this.getXpNeededForNextLevel();
+        while (this.experienceProgress < 0.0F) {
+            float f = this.experienceProgress * (float) this.getXpNeededForNextLevel();
             if (this.experienceLevel > 0) {
                 this.giveExperienceLevels(-1);
-                this.experienceProgress = 1.0F + f / (float)this.getXpNeededForNextLevel();
+                this.experienceProgress = 1.0F + f / (float) this.getXpNeededForNextLevel();
             } else {
                 this.giveExperienceLevels(-1);
                 this.experienceProgress = 0.0F;
             }
         }
 
-        while(this.experienceProgress >= 1.0F) {
-            this.experienceProgress = (this.experienceProgress - 1.0F) * (float)this.getXpNeededForNextLevel();
+        while (this.experienceProgress >= 1.0F) {
+            this.experienceProgress = (this.experienceProgress - 1.0F) * (float) this.getXpNeededForNextLevel();
             this.giveExperienceLevels(1);
-            this.experienceProgress /= (float)this.getXpNeededForNextLevel();
+            this.experienceProgress /= (float) this.getXpNeededForNextLevel();
         }
 
     }
@@ -542,7 +545,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
         }
         setExpLvl(this.experienceLevel);
 
-        if (pLevels > 0 && this.experienceLevel % 5 == 0 && (float)this.lastLevelUpTime < (float)this.tickCount - 100.0F) {
+        if (pLevels > 0 && this.experienceLevel % 5 == 0 && (float) this.lastLevelUpTime < (float) this.tickCount - 100.0F) {
             this.lastLevelUpTime = this.tickCount;
         }
 
@@ -641,8 +644,7 @@ public class AbstractHumanCompanionEntity extends TamableAnimal implements Exten
     public double getTotalAttackDamage(ItemStack stack) {
         double damage = 0.0;
         double multiplier = 1;
-        for (AttributeModifier modifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE))
-        {
+        for (AttributeModifier modifier : stack.getAttributeModifiers(EquipmentSlot.MAINHAND).get(Attributes.ATTACK_DAMAGE)) {
             switch (modifier.getOperation()) {
                 case ADDITION -> damage += modifier.getAmount();
                 case MULTIPLY_BASE -> damage += damage * modifier.getAmount();

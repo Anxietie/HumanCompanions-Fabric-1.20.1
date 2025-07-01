@@ -90,8 +90,7 @@ public class ArbalistRangedCrossbowAttackGoal<T extends AbstractHumanCompanionEn
                 if (!flag || d0 > (double) this.attackRadiusSqr) {
                     this.mob.clearTarget();
                 }
-            }
-            else {
+            } else {
                 if (flag2) {
                     --this.updatePathDelay;
                     if (this.updatePathDelay <= 0) {

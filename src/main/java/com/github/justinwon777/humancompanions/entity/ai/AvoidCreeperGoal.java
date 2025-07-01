@@ -42,7 +42,7 @@ public class AvoidCreeperGoal<T extends LivingEntity> extends Goal {
         this.predicateOnAvoidEntity = p_25046_;
         this.pathNav = p_25040_.getNavigation();
         this.setFlags(EnumSet.of(Goal.Flag.MOVE));
-        this.avoidEntityTargeting = TargetingConditions.forCombat().range((double)p_25043_).selector(p_25046_.and(p_25042_));
+        this.avoidEntityTargeting = TargetingConditions.forCombat().range((double) p_25043_).selector(p_25046_.and(p_25042_));
     }
 
     public boolean canUse() {

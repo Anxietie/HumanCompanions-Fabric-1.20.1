@@ -16,7 +16,9 @@ import java.util.List;
 public class CustomHurtByTargetGoal extends TargetGoal {
     private static final TargetingConditions HURT_BY_TARGETING = TargetingConditions.forCombat().ignoreLineOfSight().ignoreInvisibilityTesting();
     private static final int ALERT_RANGE_Y = 10;
-    /** Store the previous revengeTimer value */
+    /**
+     * Store the previous revengeTimer value
+     */
     private int timestamp;
     private final Class<?>[] toIgnoreDamage;
     @Nullable
@@ -39,14 +41,14 @@ public class CustomHurtByTargetGoal extends TargetGoal {
             if (livingentity.getType() == EntityType.PLAYER && this.mob.level().getGameRules().getBoolean(GameRules.RULE_UNIVERSAL_ANGER)) {
                 return false;
             } else {
-                for(Class<?> oclass : this.toIgnoreDamage) {
+                for (Class<?> oclass : this.toIgnoreDamage) {
                     if (oclass.isAssignableFrom(livingentity.getClass())) {
                         return false;
                     }
                 }
 
                 if (livingentity instanceof TamableAnimal) {
-                    if (((TamableAnimal)this.mob).getOwner() == ((TamableAnimal)livingentity).getOwner()) {
+                    if (((TamableAnimal) this.mob).getOwner() == ((TamableAnimal) livingentity).getOwner()) {
                         return false;
                     }
                 }
@@ -77,22 +79,22 @@ public class CustomHurtByTargetGoal extends TargetGoal {
         List<? extends Mob> list = this.mob.level().getEntitiesOfClass(AbstractHumanCompanionEntity.class, aabb, EntitySelector.NO_SPECTATORS);
         Iterator iterator = list.iterator();
 
-        while(true) {
+        while (true) {
             Mob mob;
-            while(true) {
+            while (true) {
                 if (!iterator.hasNext()) {
                     return;
                 }
 
-                mob = (Mob)iterator.next();
-                if (this.mob != mob && mob.getTarget() == null && (!(this.mob instanceof TamableAnimal) || ((TamableAnimal)this.mob).getOwner() == ((TamableAnimal)mob).getOwner()) && !mob.isAlliedTo(this.mob.getLastHurtByMob())) {
+                mob = (Mob) iterator.next();
+                if (this.mob != mob && mob.getTarget() == null && (!(this.mob instanceof TamableAnimal) || ((TamableAnimal) this.mob).getOwner() == ((TamableAnimal) mob).getOwner()) && !mob.isAlliedTo(this.mob.getLastHurtByMob())) {
                     if (this.toIgnoreAlert == null) {
                         break;
                     }
 
                     boolean flag = false;
 
-                    for(Class<?> oclass : this.toIgnoreAlert) {
+                    for (Class<?> oclass : this.toIgnoreAlert) {
                         if (mob.getClass() == oclass) {
                             flag = true;
                             break;

@@ -20,8 +20,7 @@ public class SetAlertPacket {
             companion.setAlert(!companion.isAlert());
             if (companion.isAlert()) {
                 companion.addAlertGoals();
-            }
-            else {
+            } else {
                 companion.removeAlertGoals();
             }
         }
