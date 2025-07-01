@@ -11,6 +11,7 @@ import net.minecraft.network.FriendlyByteBuf;
 
 public class OpenInventoryPacket {
     public static void receive(Minecraft client, ClientPacketListener handler, FriendlyByteBuf buf, PacketSender responseSender) {
+        /*
         int containerID = buf.readInt();
         int containerSize = buf.readInt();
         int companionID = buf.readInt();
@@ -26,5 +27,6 @@ public class OpenInventoryPacket {
             player.containerMenu = container;
             client.setScreen(new CompanionScreen(container, player.getInventory(), companion));
         }
+         */
     }
 }
