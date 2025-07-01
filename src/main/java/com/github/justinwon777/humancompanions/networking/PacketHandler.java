@@ -14,9 +14,6 @@ public class PacketHandler {
     public static final ResourceLocation SET_PATROLLING_ID = new ResourceLocation(HumanCompanions.MOD_ID, "set_patrolling");
     public static final ResourceLocation SET_STATIONARY_ID = new ResourceLocation(HumanCompanions.MOD_ID, "set_stationary");
 
-    // S2C
-    public static final ResourceLocation OPEN_INVENTORY_ID = new ResourceLocation(HumanCompanions.MOD_ID, "open_inventory");
-
     public static void register() {
         ServerPlayNetworking.registerGlobalReceiver(CLEAR_TARGET_ID, ClearTargetPacket::receive);
         ServerPlayNetworking.registerGlobalReceiver(RELEASE_ID, ReleasePacket::receive);
