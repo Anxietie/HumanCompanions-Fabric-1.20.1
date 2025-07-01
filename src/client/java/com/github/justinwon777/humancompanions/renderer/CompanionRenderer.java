@@ -1,4 +1,4 @@
-package com.github.justinwon777.humancompanions.client.renderer;
+package com.github.justinwon777.humancompanions.renderer;
 
 import com.github.justinwon777.humancompanions.entity.AbstractHumanCompanionEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
